@@ -13,6 +13,14 @@ const CategoryMealsScreen = (props) => {
           navigation.navigate("MealDetail");
         }}
       />
+      <Button
+        title="Go Back"
+        onPress={() => {
+          // alternatively you can use pop() instead of goBack()
+          // pop only works in stack navigators
+          navigation.goBack();
+        }}
+      />
     </View>
   );
 };
