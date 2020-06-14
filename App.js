@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
-
+import { enableScreens } from "react-native-screens";
 import MealsNavigator from "./navigation/MealsNavigator";
+
+/**
+ * provides native primitives to represent screens instead of plain <View> components
+ * in order to better take advantage of operating system behavior
+ * and optimizations around screens. Used by library authors,
+ * unlikely to be used directly by most app developers.
+ */
+enableScreens();
 
 const fetchFonts = () => {
   // this will return a promise
