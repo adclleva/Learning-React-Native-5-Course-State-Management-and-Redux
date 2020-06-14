@@ -46,6 +46,7 @@ const CategoriesScreen = (props) => {
 };
 
 // this allows to us options for the navigation
+// always remember to reload the app to get the update
 CategoriesScreen.navigationOptions = {
   headerTitle: "Meal Categories",
   headerStyle: {
