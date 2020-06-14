@@ -1,8 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
+import { CATEGORIES } from "../data/dummy-data";
 
 const CategoryMealsScreen = (props) => {
   const { navigation } = props;
+
+  const categoryId = navigation.getParam("categoryId");
+
+  const selectedCategory = CATEGORIES.find(
+    (category) => category.id == categoryId
+  );
+  console.log("selected", selectedCategory);
 
   return (
     <View style={styles.screen}>
