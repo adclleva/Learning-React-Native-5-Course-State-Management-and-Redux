@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
+import MealItem from "../components/MealItem";
 
 const CategoryMealsScreen = (props) => {
   const { navigation } = props;
@@ -16,9 +17,14 @@ const CategoryMealsScreen = (props) => {
     const { item } = itemData;
 
     return (
-      <View>
-        <Text>{item.title}</Text>
-      </View>
+      <MealItem
+        title={item.title}
+        onSelectMeal={() => {}}
+        duration={item.duration}
+        complexity={item.complexity}
+        affordability={item.affordability}
+        image={item.imageUrl}
+      />
     );
   };
 
@@ -32,6 +38,8 @@ const CategoryMealsScreen = (props) => {
         data={currentMealsData}
         keyExtractor={(item, index) => item.id}
         renderItem={(item) => renderMealItem(item)}
+        // we add a style here so the child can widths can fill up to te width of the parent
+        style={{ width: "100%" }}
       />
     </View>
   );
@@ -57,5 +65,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    padding: 15,
   },
 });

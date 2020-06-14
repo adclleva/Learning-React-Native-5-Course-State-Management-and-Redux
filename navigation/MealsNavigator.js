@@ -30,8 +30,7 @@ const MealsNavigator = createStackNavigator(
     defaultNavigationOptions: {
       // these gives you options that apply to every screen and get can overwritten
       headerStyle: {
-        backgroundColor:
-          Platform.OS === "android" ? Colors.primaryColor : "#fff",
+        backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "",
       },
       headerTintColor: Platform.OS === "android" ? "#fff" : Colors.primaryColor,
     },
