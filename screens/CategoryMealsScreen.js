@@ -1,32 +1,37 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { CATEGORIES } from "../data/dummy-data";
+import { StyleSheet, Text, View, Button, FlatList } from "react-native";
+import { CATEGORIES, MEALS } from "../data/dummy-data";
 
 const CategoryMealsScreen = (props) => {
   const { navigation } = props;
 
   const categoryId = navigation.getParam("categoryId");
 
-  const selectedCategory = CATEGORIES.find(
-    (category) => category.id == categoryId
-  );
+  // this will return all the meals that match the categoryId
+  const currentMealsData = MEALS.filter((meal) => {
+    return meal.categoryIds.includes(categoryId);
+  });
+
+  const renderMealItem = (itemData) => {
+    const { item } = itemData;
+
+    return (
+      <View>
+        <Text>{item.title}</Text>
+      </View>
+    );
+  };
+
+  // const selectedCategory = CATEGORIES.find(
+  //   (category) => category.id == categoryId
+  // );
 
   return (
     <View style={styles.screen}>
-      <Text>The Category Meal Screen!</Text>
-      <Button
-        title="Go to Category Details Screen"
-        onPress={() => {
-          navigation.navigate("MealDetail");
-        }}
-      />
-      <Button
-        title="Go Back"
-        onPress={() => {
-          // alternatively you can use pop() instead of goBack()
-          // pop only works in stack navigators
-          navigation.goBack();
-        }}
+      <FlatList
+        data={currentMealsData}
+        keyExtractor={(item, index) => item.id}
+        renderItem={(item) => renderMealItem(item)}
       />
     </View>
   );
