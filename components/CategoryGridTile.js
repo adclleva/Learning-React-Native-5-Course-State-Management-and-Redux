@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     margin: 15,
     height: 150,
     borderRadius: 10,
+    // this will enable the shadows for both OS's
     overflow:
       Platform.OS === "android" && Platform.Version >= 21
         ? "hidden"
