@@ -2,11 +2,13 @@
  * this is because we are using based on 4.x
  * this will give the ability to hold different screens
  */
-
+import React from "react";
 import { Platform } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+
+import { Ionicons } from "@expo/vector-icons";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
@@ -41,10 +43,40 @@ const MealsNavigator = createStackNavigator(
 ); // this is basically a react component
 
 // this is to set up the tab navigator
-const MealsTabNavigator = createBottomTabNavigator({
-  Meals: MealsNavigator, // you can use what we created with the createStackNavigator to be part of this stack
-  Favorites: FavoritesScreen,
-});
+const MealsTabNavigator = createBottomTabNavigator(
+  {
+    Meals: {
+      screen: MealsNavigator, // you can use what we created with the createStackNavigator to be part of this stack
+      navigationOptions: {
+        tabBarIcon: (tabInfo) => {
+          return (
+            <Ionicons
+              name="ios-restaurant"
+              size={25}
+              color={tabInfo.tintColor}
+            />
+          ); // we can use any icon name with the Ionicons from expo/icons
+        },
+      },
+    },
+    Favorites: {
+      screen: FavoritesScreen,
+      navigationOptions: {
+        tabBarLabel: "Favorites!",
+        tabBarIcon: (tabInfo) => {
+          return (
+            <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />
+          ); // we can use any icon name with the Ionicons from expo/icons
+        },
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: Colors.accentColor, // this will change the color of the tintColor when the activeTintColor changes
+    },
+  }
+);
 
 // we used to wrap our main navigator with createAppContainer
 // we then have our root navigator be the tab navigator, which can have nested navigators
