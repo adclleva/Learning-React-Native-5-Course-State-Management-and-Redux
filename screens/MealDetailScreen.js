@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { MEALS } from "../data/dummy-data";
+import CustomHeaderButton from "../components/CustomHeaderButton";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 const MealDetailScreen = (props) => {
   const { navigation } = props;
@@ -26,6 +28,19 @@ MealDetailScreen.navigationOptions = (navigationData) => {
 
   return {
     headerTitle: selectedMeal.title,
+    headerRight: () => (
+      // this is the initial set up for the react-navigation-header-buttons to have the star icon to be on the right
+      // refer to this for more guidance https://github.com/vonovak/react-navigation-header-buttons
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Favorite"
+          iconName="ios-star"
+          onPress={() => {
+            console.log(`${selectedMeal.title} is marked as Favorite`);
+          }}
+        />
+      </HeaderButtons>
+    ),
   };
 };
 

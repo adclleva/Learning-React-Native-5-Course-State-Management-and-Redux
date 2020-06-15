@@ -49,8 +49,13 @@ const CategoryMealsScreen = (props) => {
   );
 };
 
-// you can also have the navigation as a function and return what we want
-// we get the same navigation props that we get in our component props
+/**
+ * you can also have the navigation as a function and return what we want
+ * we get the same navigation props that we get in our component props
+ * navigationData gives us an object of options to use
+ * we always return the object for the navigation options to use
+ * this allows us to get the data dynamically
+ */
 CategoryMealsScreen.navigationOptions = (navigationData) => {
   const categoryId = navigationData.navigation.getParam("categoryId");
   const selectedCategory = CATEGORIES.find((category) => {
