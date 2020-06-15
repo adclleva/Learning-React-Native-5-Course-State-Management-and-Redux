@@ -21,10 +21,8 @@ const MealDetailScreen = (props) => {
 };
 
 MealDetailScreen.navigationOptions = (navigationData) => {
-  console.log("navigationData", navigationData);
   const mealId = navigationData.navigation.getParam("mealId");
   const selectedMeal = MEALS.find((meal) => mealId === meal.id);
-  console.log("selectedMeal", selectedMeal);
 
   return {
     headerTitle: selectedMeal.title,
