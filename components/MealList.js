@@ -4,6 +4,8 @@ import MealItem from "./MealItem";
 
 const MealList = (props) => {
   // we'll be using the same logic of FlatList for the CategoriesScreen
+  // ! it's important that the navigation works only on the components that are loaded within the navigator and not nested components
+  // ! thus why we always forward the navigation props down to get the functionality from the loaded component
   const { listData, navigation } = props;
 
   const renderMealItem = (itemData) => {
