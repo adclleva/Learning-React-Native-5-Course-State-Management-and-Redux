@@ -17,6 +17,17 @@ import MealDetailScreen from "../screens/MealDetailScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 
 import Colors from "../constants/Colors";
+import FavoriteScreen from "../screens/FavoritesScreen";
+
+const defaultStackNavigationOptions = {
+  // these gives you options that apply to every screen and get can overwritten
+  // mode: "modal", // this changes the transition animation
+  headerStyle: {
+    backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "",
+  },
+  headerTintColor: Platform.OS === "android" ? "#fff" : Colors.primaryColor,
+  headerTitle: "A Screen",
+};
 
 const MealsNavigator = createStackNavigator(
   {
@@ -31,17 +42,20 @@ const MealsNavigator = createStackNavigator(
     MealDetail: MealDetailScreen,
   },
   {
-    // mode: "modal", // this changes the transition animation
     // initialRouteName: 'CategoryMeals' // this can be the initial page for the routes
-    defaultNavigationOptions: {
-      // these gives you options that apply to every screen and get can overwritten
-      headerStyle: {
-        backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "",
-      },
-      headerTintColor: Platform.OS === "android" ? "#fff" : Colors.primaryColor,
-    },
+    defaultNavigationOptions: defaultStackNavigationOptions,
   }
 ); // this is basically a react component
+
+const FavoriteNavigator = createStackNavigator(
+  {
+    Favorites: FavoriteScreen,
+    MealDetail: MealDetailScreen,
+  },
+  {
+    defaultNavigationOptions: defaultStackNavigationOptions,
+  }
+);
 
 const tabsScreenConfig = {
   // this will be the tabs config depending on the OS
@@ -57,7 +71,7 @@ const tabsScreenConfig = {
     },
   },
   Favorites: {
-    screen: FavoritesScreen,
+    screen: FavoriteNavigator,
     navigationOptions: {
       tabBarLabel: "Favorites!",
       tabBarIcon: (tabInfo) => {

@@ -9,7 +9,9 @@ const FavoriteScreen = (props) => {
   );
 };
 
-export default FavoriteScreen;
+FavoriteScreen.navigationOptions = {
+  headerTitle: "Your Favorites",
+};
 
 const styles = StyleSheet.create({
   screen: {
@@ -18,3 +20,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default FavoriteScreen;
