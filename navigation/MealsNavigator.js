@@ -9,6 +9,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import { Ionicons } from "@expo/vector-icons";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
@@ -42,41 +43,48 @@ const MealsNavigator = createStackNavigator(
   }
 ); // this is basically a react component
 
-// this is to set up the tab navigator
-const MealsTabNavigator = createBottomTabNavigator(
-  {
-    Meals: {
-      screen: MealsNavigator, // you can use what we created with the createStackNavigator to be part of this stack
-      navigationOptions: {
-        tabBarIcon: (tabInfo) => {
-          return (
-            <Ionicons
-              name="ios-restaurant"
-              size={25}
-              color={tabInfo.tintColor}
-            />
-          ); // we can use any icon name with the Ionicons from expo/icons
-        },
+const tabsScreenConfig = {
+  // this will be the tabs config depending on the OS
+  Meals: {
+    screen: MealsNavigator, // you can use what we created with the createStackNavigator to be part of this stack
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => {
+        return (
+          <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
+        ); // we can use any icon name with the Ionicons from expo/icons
       },
-    },
-    Favorites: {
-      screen: FavoritesScreen,
-      navigationOptions: {
-        tabBarLabel: "Favorites!",
-        tabBarIcon: (tabInfo) => {
-          return (
-            <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />
-          ); // we can use any icon name with the Ionicons from expo/icons
-        },
-      },
+      tabBarColor: Colors.primaryColor, // this only works for android with the material
     },
   },
-  {
-    tabBarOptions: {
-      activeTintColor: Colors.accentColor, // this will change the color of the tintColor when the activeTintColor changes
+  Favorites: {
+    screen: FavoritesScreen,
+    navigationOptions: {
+      tabBarLabel: "Favorites!",
+      tabBarIcon: (tabInfo) => {
+        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />; // we can use any icon name with the Ionicons from expo/icons
+      },
+      tabBarColor: Colors.accentColor, // this only works with shifting
     },
-  }
-);
+  },
+};
+
+// this is to set up the tab navigator
+const MealsTabNavigator =
+  Platform.OS === "android"
+    ? createMaterialBottomTabNavigator(tabsScreenConfig, {
+        // this only works for android
+        // for material bottom tabs navigator, this should actually be activeColor for android
+        activeColor: "#fff",
+        shifting: true,
+        barStyle: {
+          backgroundColor: Colors.primaryColor,
+        },
+      })
+    : createBottomTabNavigator(tabsScreenConfig, {
+        tabBarOptions: {
+          activeTintColor: Colors.accentColor, // this will change the color of the tintColor when the activeTintColor changes
+        },
+      });
 
 // we used to wrap our main navigator with createAppContainer
 // we then have our root navigator be the tab navigator, which can have nested navigators
