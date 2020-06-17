@@ -102,14 +102,39 @@ const MealsTabNavigator =
         },
       });
 
-const FiltersNavigator = createStackNavigator({
-  Filters: FiltersScreen,
-}); // we have this stacknavigator so we can have a header here
+const FiltersNavigator = createStackNavigator(
+  {
+    Filters: FiltersScreen,
+  },
+  {
+    // we can set the navigationOptions to the whole navigator itself
+    // navigationOptions: {
+    //   drawerLabel: "Filters!!",
+    // },
+    defaultNavigationOptions: defaultStackNavigationOptions,
+  }
+); // we have this stacknavigator so we can have a header here
 
-const MainNavigator = createDrawerNavigator({
-  MealsFavs: MealsTabNavigator,
-  Filters: FiltersNavigator,
-});
+const MainNavigator = createDrawerNavigator(
+  {
+    MealsFavs: {
+      screen: MealsTabNavigator,
+      navigationOptions: {
+        drawerLabel: "Meals",
+      },
+    },
+    Filters: FiltersNavigator,
+  },
+  {
+    // the second parameter is usually the content to configure and style
+    contentOptions: {
+      activeTintColor: Colors.accentColor,
+      labelStyle: {
+        fontFamily: "open-sans-bold",
+      },
+    },
+  }
+);
 
 // we used to wrap our main navigator with createAppContainer
 // we then have our root navigator be the tab navigator, which can have nested navigators
