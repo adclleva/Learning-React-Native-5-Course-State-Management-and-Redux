@@ -9,6 +9,8 @@ import {
 
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTile from "../components/CategoryGridTile";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/CustomHeaderButton";
 
 const CategoriesScreen = (props) => {
   const { navigation } = props;
@@ -43,16 +45,23 @@ const CategoriesScreen = (props) => {
 
 // this allows to us options for the navigation
 // always remember to reload the app to get the update
-CategoriesScreen.navigationOptions = {
-  headerTitle: "Meal Categories",
+CategoriesScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: "Meal Categories",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Menu"
+          iconName="ios-menu"
+          onPress={() => {
+            // toggleDrawer() method from the object passed down for navData
+            // enables the user
+            navData.navigation.openDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default CategoriesScreen;

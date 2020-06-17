@@ -4,6 +4,7 @@ import { HeaderButton } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons"; // this is for icons
 import Colors from "../constants/Colors";
 
+// these are all set up for the custom buttons for the header
 const CustomHeaderButton = (props) => {
   // {...props} will forward all the props
   return (

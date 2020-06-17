@@ -7,6 +7,7 @@ import { Platform } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createDrawerNavigator } from "react-navigation-drawer";
 
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
@@ -15,6 +16,7 @@ import CategoriesScreen from "../screens/CategoriesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
 import MealDetailScreen from "../screens/MealDetailScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
+import FiltersScreen from "../screens/FiltersScreen";
 
 import Colors from "../constants/Colors";
 import FavoriteScreen from "../screens/FavoritesScreen";
@@ -100,6 +102,15 @@ const MealsTabNavigator =
         },
       });
 
+const FiltersNavigator = createStackNavigator({
+  Filters: FiltersScreen,
+}); // we have this stacknavigator so we can have a header here
+
+const MainNavigator = createDrawerNavigator({
+  MealsFavs: MealsTabNavigator,
+  Filters: FiltersNavigator,
+});
+
 // we used to wrap our main navigator with createAppContainer
 // we then have our root navigator be the tab navigator, which can have nested navigators
-export default createAppContainer(MealsTabNavigator);
+export default createAppContainer(MainNavigator);
