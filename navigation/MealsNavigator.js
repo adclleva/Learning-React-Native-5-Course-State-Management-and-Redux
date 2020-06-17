@@ -3,7 +3,7 @@
  * this will give the ability to hold different screens
  */
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Text } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
@@ -26,6 +26,14 @@ const defaultStackNavigationOptions = {
   // mode: "modal", // this changes the transition animation
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "",
+  },
+  // this gives style to the text of the header
+  headerTitleStyle: {
+    fontFamily: "open-sans-bold",
+  },
+  // this is for the style of back title
+  headerBackTitleStyle: {
+    fontFamily: "open-sans",
   },
   headerTintColor: Platform.OS === "android" ? "#fff" : Colors.primaryColor,
   headerTitle: "A Screen",
@@ -70,6 +78,16 @@ const tabsScreenConfig = {
         ); // we can use any icon name with the Ionicons from expo/icons
       },
       tabBarColor: Colors.primaryColor, // this only works for android with the material
+      // we have to put this property here within the tabs config
+      // since it's not available within the second parameters of the createMaterialBottomTabNavigator
+      // you can return a text component, but keep in mind that we have to use the Platform api for only android
+      // since the text component will override the styles within IOS
+      tabBarLabel:
+        Platform.OS === "android" ? (
+          <Text style={{ fontFamily: "open-sans-bold" }}>Meals</Text>
+        ) : (
+          "Meals"
+        ),
     },
   },
   Favorites: {
@@ -80,6 +98,12 @@ const tabsScreenConfig = {
         return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />; // we can use any icon name with the Ionicons from expo/icons
       },
       tabBarColor: Colors.accentColor, // this only works with shifting
+      tabBarLabel:
+        Platform.OS === "android" ? (
+          <Text style={{ fontFamily: "open-sans-bold" }}>Favorites</Text>
+        ) : (
+          "Favorites"
+        ),
     },
   },
 };
@@ -98,6 +122,9 @@ const MealsTabNavigator =
       })
     : createBottomTabNavigator(tabsScreenConfig, {
         tabBarOptions: {
+          labelStyle: {
+            fontFamily: "open-sans-bold",
+          },
           activeTintColor: Colors.accentColor, // this will change the color of the tintColor when the activeTintColor changes
         },
       });
