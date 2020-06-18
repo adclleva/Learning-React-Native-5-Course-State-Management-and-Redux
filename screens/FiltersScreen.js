@@ -31,6 +31,7 @@ const FiltersScreen = (props) => {
 
   // this is to control and save the filter choices
   // the useCallback has React to cache the function and calls it only when the dependencies change
+  // useCallbacks usually runs in conjunction with useEffect to avoid infinite loops whenever the appliedFilters data changes and the component rer-renders
   const saveFilters = useCallback(() => {
     const appliedFilters = {
       glutenFree: isGlutenFree,
