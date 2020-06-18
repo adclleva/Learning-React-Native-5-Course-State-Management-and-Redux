@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, Switch, Platform } from "react-native";
-import CustomHeaderButton from "../components/CustomHeaderButton";
 import { Item, HeaderButtons } from "react-navigation-header-buttons";
+
+import CustomHeaderButton from "../components/CustomHeaderButton";
 import Colors from "../constants/Colors";
 
 const FilterSwitch = (props) => {
@@ -21,10 +22,34 @@ const FilterSwitch = (props) => {
 };
 
 const FiltersScreen = (props) => {
+  const { navigation } = props;
+
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isLactoseFree, setIsLactoseFree] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
   const [isVegetarian, setIsVegetarian] = useState(false);
+
+  // this is to control and save the filter choices
+  // the useCallback has React to cache the function and calls it only when the dependencies change
+  const saveFilters = useCallback(() => {
+    const appliedFilters = {
+      glutenFree: isGlutenFree,
+      lactoseFree: isLactoseFree,
+      vegan: isVegan,
+      vegetarian: isVegetarian,
+    };
+
+    console.log(appliedFilters);
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+
+  useEffect(() => {
+    // this is a valid way to communicate with the component to the navigationOptions
+    // set params updates the params for the currently loaded screen
+    navigation.setParams({
+      save: saveFilters,
+    });
+    // if savFilters, the useEffect runs and not use navigation as a dependency to avoid infinite loops
+  }, [saveFilters]);
 
   return (
     <View style={styles.screen}>
@@ -56,12 +81,24 @@ const FiltersScreen = (props) => {
 FiltersScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Filters",
-    headerLeft: () => (
+    headerLeft: (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
           title="Menu"
           iconName="ios-menu"
-          onPress={() => navData.navigation.openDrawer()}
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Save"
+          iconName="ios-save"
+          onPress={() => {
+            // we do this to have it executed for the pointer to the function
+            navData.navigation.getParam("save")();
+          }}
         />
       </HeaderButtons>
     ),
@@ -77,7 +114,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
   },
   title: {
-    fontFamily: "opens-sans",
+    fontFamily: "opens-sans-bold",
     fontSize: 22,
     margin: 20,
     textAlign: "center",
