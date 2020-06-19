@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
-import { useSelector } from "react-redux";
+
+// useDispatch gives us an easier way of firing a function and only within the component and not the navigation options
+// we can solve that issue by just having it passed by through the parent
+import { useSelector, useDispatch } from "react-redux";
 
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import DefaultText from "../components/DefaultText";
+import { toggleFavorite } from "../store/actions/meals"; // we call the action creator and not the identifier
 
 const ListItem = (props) => {
   // this component will be for the list items that we're generating
@@ -17,6 +21,7 @@ const ListItem = (props) => {
 
 const MealDetailScreen = (props) => {
   const { navigation } = props;
+
   const mealId = navigation.getParam("mealId");
   const availableMeals = useSelector((state) => state.meals.meals);
   const selectedMeal = availableMeals.find((meal) => mealId === meal.id);
@@ -27,8 +32,21 @@ const MealDetailScreen = (props) => {
     imageUrl,
     ingredients,
     steps,
-    title,
   } = selectedMeal;
+
+  const dispatch = useDispatch(); // this is how we're going to dispatch our actions
+
+  // we create a function that would handle the dispatch action for toggling the favorite
+  // we use useCallback to avoid infinite loops since the navigation is changing with the component rendering
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(selectedMeal.id)); // we could have also used the mealId from the navigation param props
+  }, [dispatch, selectedMeal]);
+
+  // here we are passing down the toggleFavoriteHandler to the navigation options within the component
+  useEffect(() => {
+    navigation.setParams({ toggleFav: toggleFavoriteHandler });
+  }, [toggleFavoriteHandler]);
+  // thanks to the useCallback, we won't enter an infinite loop with toggleFavoriteHandler is always changing
 
   // when this component renders, it sends these params to be available to the navigation
   // we would have to have it within a useEffect to avoid an infinite loop since it is changing the props
@@ -63,20 +81,14 @@ MealDetailScreen.navigationOptions = (navigationData) => {
   // we are getting the title from the params passed from the component
   // it's better to get the params from the navigation that triggers the navigation action to render this component
   const mealTitle = navigationData.navigation.getParam("mealTitle");
-
+  const toggleFavorite = navigationData.navigation.getParam("toggleFav");
   return {
     headerTitle: mealTitle,
     headerRight: () => (
       // this is the initial set up for the react-navigation-header-buttons to have the star icon to be on the right
       // refer to this for more guidance https://github.com/vonovak/react-navigation-header-buttons
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title="Favorite"
-          iconName="ios-star"
-          onPress={() => {
-            console.log(`${mealTitle} is marked as Favorite`);
-          }}
-        />
+        <Item title="Favorite" iconName="ios-star" onPress={toggleFavorite} />
       </HeaderButtons>
     ),
   };

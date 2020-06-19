@@ -1,17 +1,29 @@
-/**
- * it gets the current state snapshot and will derive a new state
- * when an action gets dispatched
- */
 import { MEALS } from "../../data/dummy-data";
+import { TOGGLE_FAVORITE } from "../actions/meals";
 
 const initialState = {
   meals: MEALS,
   filteredMeals: MEALS,
-  favoriteMeals: [], // we can save the data in a server, but we'll make it empty here
+  favoriteMeals: [],
 };
 
 const mealsReducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case TOGGLE_FAVORITE:
+      const existingIndex = state.favoriteMeals.findIndex(
+        (meal) => meal.id === action.mealId
+      );
+      if (existingIndex >= 0) {
+        const updatedFavMeals = [...state.favoriteMeals];
+        updatedFavMeals.splice(existingIndex, 1);
+        return { ...state, favoriteMeals: updatedFavMeals };
+      } else {
+        const meal = state.meals.find((meal) => meal.id === action.mealId);
+        return { ...state, favoriteMeals: state.favoriteMeals.concat(meal) };
+      }
+    default:
+      return state;
+  }
 };
 
 export default mealsReducer;
