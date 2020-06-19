@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
   },
   title: {
-    fontFamily: "opens-sans-bold",
+    fontFamily: "open-sans-bold",
     fontSize: 22,
     margin: 20,
     textAlign: "center",
@@ -125,6 +125,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "80%",
-    marginVertical: 50,
+    marginVertical: 15,
   },
 });

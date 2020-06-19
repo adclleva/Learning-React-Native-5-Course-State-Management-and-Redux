@@ -88,7 +88,13 @@ MealDetailScreen.navigationOptions = (navigationData) => {
       // this is the initial set up for the react-navigation-header-buttons to have the star icon to be on the right
       // refer to this for more guidance https://github.com/vonovak/react-navigation-header-buttons
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item title="Favorite" iconName="ios-star" onPress={toggleFavorite} />
+        <Item
+          title="Favorite"
+          iconName="ios-star"
+          onPress={() => {
+            toggleFavorite();
+          }}
+        />
       </HeaderButtons>
     ),
   };
