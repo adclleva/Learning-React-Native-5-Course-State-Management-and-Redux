@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -27,7 +27,17 @@ const MealDetailScreen = (props) => {
     imageUrl,
     ingredients,
     steps,
+    title,
   } = selectedMeal;
+
+  // when this component renders, it sends these params to be available to the navigation
+  // we would have to have it within a useEffect to avoid an infinite loop since it is changing the props
+  // useEffect(() => {
+  //   navigation.setParams({
+  //     mealTitle: title,
+  //   });
+  // }, [selectedMeal]);
+  // we don't pass it down to the navigation because the component will render before it's passed to the navigation
 
   return (
     <ScrollView>
@@ -50,11 +60,12 @@ const MealDetailScreen = (props) => {
 };
 
 MealDetailScreen.navigationOptions = (navigationData) => {
-  const mealId = navigationData.navigation.getParam("mealId");
-  const selectedMeal = MEALS.find((meal) => mealId === meal.id);
+  // we are getting the title from the params passed from the component
+  // it's better to get the params from the navigation that triggers the navigation action to render this component
+  const mealTitle = navigationData.navigation.getParam("mealTitle");
 
   return {
-    headerTitle: selectedMeal.title,
+    headerTitle: mealTitle,
     headerRight: () => (
       // this is the initial set up for the react-navigation-header-buttons to have the star icon to be on the right
       // refer to this for more guidance https://github.com/vonovak/react-navigation-header-buttons
@@ -63,7 +74,7 @@ MealDetailScreen.navigationOptions = (navigationData) => {
           title="Favorite"
           iconName="ios-star"
           onPress={() => {
-            console.log(`${selectedMeal.title} is marked as Favorite`);
+            console.log(`${mealTitle} is marked as Favorite`);
           }}
         />
       </HeaderButtons>

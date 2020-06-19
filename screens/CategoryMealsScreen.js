@@ -11,9 +11,8 @@ const CategoryMealsScreen = (props) => {
 
   const categoryId = navigation.getParam("categoryId");
 
-  // this
+  // this gets the state which would derive from the combined reducers which will then get our filtered meals
   const availableMeals = useSelector((state) => state.meals.filteredMeals);
-  console.log("availableMeals", availableMeals);
 
   // this will return all the meals that match the categoryId
   const currentMealsData = availableMeals.filter((meal) => {
