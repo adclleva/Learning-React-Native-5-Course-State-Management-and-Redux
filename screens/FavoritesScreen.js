@@ -1,13 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import MealList from "../components/MealList";
-import { MEALS } from "../data/dummy-data";
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 const FavoriteScreen = (props) => {
   const { navigation } = props;
-  const favMeals = MEALS.filter((meal) => meal.id === "m1" || meal.id === "m2");
+
+  // this slices the meals state from the combined reducer and will get the meals state from it
+  const favMeals = useSelector((state) => state.meals.favoriteMeals);
 
   return <MealList navigation={navigation} listData={favMeals} />;
 };
