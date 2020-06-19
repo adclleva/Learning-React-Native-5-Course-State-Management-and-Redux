@@ -3,7 +3,21 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import { enableScreens } from "react-native-screens";
+import { createStore, combineReducers } from "redux";
+
+// this can provide the store to the app
+import { Provider } from "react-redux";
+
 import MealsNavigator from "./navigation/MealsNavigator";
+import mealsReducer from "./store/reducers/meals";
+
+// we can utilize what is managed through these reducers with the help of the meals property
+const rootReducer = combineReducers({
+  meals: mealsReducer,
+});
+
+// creates store takes a reducer at the end
+const store = createStore(rootReducer);
 
 /**
  * provides native primitives to represent screens instead of plain <View> components
@@ -34,5 +48,9 @@ export default function App() {
     );
   }
 
-  return <MealsNavigator />;
+  return (
+    <Provider store={store}>
+      <MealsNavigator />
+    </Provider>
+  );
 }

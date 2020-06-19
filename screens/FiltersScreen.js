@@ -82,7 +82,7 @@ const FiltersScreen = (props) => {
 FiltersScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Filters",
-    headerLeft: (
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
           title="Menu"
@@ -91,7 +91,7 @@ FiltersScreen.navigationOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: (
+    headerRight: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
           title="Save"

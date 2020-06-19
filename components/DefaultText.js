@@ -2,9 +2,9 @@ import React, { Children } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const DefaultText = (props) => {
-  const { children, style } = props;
+  const { children } = props;
 
-  return <Text style={{ ...styles.text, style }}>{children}</Text>;
+  return <Text style={styles.text}>{children}</Text>;
 };
 
 export default DefaultText;

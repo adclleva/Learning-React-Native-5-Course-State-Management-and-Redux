@@ -10,8 +10,6 @@ const MealList = (props) => {
 
   const renderMealItem = (itemData) => {
     const { item } = itemData;
-    console.log("item", item);
-    console.log("imageUrl", item.imageUrl);
 
     return (
       <MealItem
