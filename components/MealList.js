@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
+
 import MealItem from "./MealItem";
+import { useSelector } from "react-redux";
 
 const MealList = (props) => {
   // we'll be using the same logic of FlatList for the CategoriesScreen
@@ -8,9 +10,12 @@ const MealList = (props) => {
   // ! thus why we always forward the navigation props down to get the functionality from the loaded component
   const { listData, navigation } = props;
 
+  const favoriteMeals = useSelector((state) => state.meals.favoriteMeals);
+
   const renderMealItem = (itemData) => {
     const { item } = itemData;
-
+    // to check if the current meal is our favorite
+    const isFavorite = favoriteMeals.some((meal) => meal.id === item.id);
     return (
       <MealItem
         title={item.title}
@@ -18,6 +23,7 @@ const MealList = (props) => {
           navigation.navigate("MealDetail", {
             mealId: item.id,
             mealTitle: item.title,
+            isCurrentMealFavorite: isFavorite,
           });
         }}
         duration={item.duration}

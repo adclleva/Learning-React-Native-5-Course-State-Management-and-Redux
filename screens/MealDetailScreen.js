@@ -24,6 +24,13 @@ const MealDetailScreen = (props) => {
 
   const mealId = navigation.getParam("mealId");
   const availableMeals = useSelector((state) => state.meals.meals);
+  // the state is the global state from the store
+  // const favoriteMeals = useSelector((state) => state.meals.favoriteMeals);
+  // this checks if the current meal has been favorite
+  const isCurrentMealFavorite = useSelector((state) =>
+    state.meals.favoriteMeals.some((meal) => meal.id === mealId)
+  );
+
   const selectedMeal = availableMeals.find((meal) => mealId === meal.id);
   const {
     duration,
@@ -57,6 +64,11 @@ const MealDetailScreen = (props) => {
   // }, [selectedMeal]);
   // we don't pass it down to the navigation because the component will render before it's passed to the navigation
 
+  // this is to pass the isCurrentMealFavorite to the header navigation
+  useEffect(() => {
+    navigation.setParams({ isCurrentMealFavorite });
+  }, [isCurrentMealFavorite]);
+
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: imageUrl }} />
@@ -81,7 +93,11 @@ MealDetailScreen.navigationOptions = (navigationData) => {
   // we are getting the title from the params passed from the component
   // it's better to get the params from the navigation that triggers the navigation action to render this component
   const mealTitle = navigationData.navigation.getParam("mealTitle");
+  const isCurrentMealFavorite = navigationData.navigation.getParam(
+    "isCurrentMealFavorite"
+  );
   const toggleFavorite = navigationData.navigation.getParam("toggleFav");
+
   return {
     headerTitle: mealTitle,
     headerRight: () => (
@@ -90,7 +106,8 @@ MealDetailScreen.navigationOptions = (navigationData) => {
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
           title="Favorite"
-          iconName="ios-star"
+          // we can use the isCurrentMealFavorite value to conditionally render the icon
+          iconName={isCurrentMealFavorite ? "ios-star" : "ios-star-outline"}
           onPress={() => {
             toggleFavorite();
           }}
