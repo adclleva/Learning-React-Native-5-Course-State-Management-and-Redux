@@ -4,6 +4,8 @@ import { Item, HeaderButtons } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import Colors from "../constants/Colors";
+import { useDispatch } from "react-redux";
+import { setFilters } from "../store/actions/meals";
 
 const FilterSwitch = (props) => {
   const { value, onValueChange, title } = props;
@@ -29,10 +31,14 @@ const FiltersScreen = (props) => {
   const [isVegan, setIsVegan] = useState(false);
   const [isVegetarian, setIsVegetarian] = useState(false);
 
+  // this hook is to dispatch actions
+  const dispatch = useDispatch();
+
   // this is to control and save the filter choices
   // the useCallback has React to cache the function and calls it only when the dependencies change
   // useCallbacks usually runs in conjunction with useEffect to avoid infinite loops whenever the appliedFilters data changes and the component rer-renders
   const saveFilters = useCallback(() => {
+    // the keys here much match the keys in the reducer
     const appliedFilters = {
       glutenFree: isGlutenFree,
       lactoseFree: isLactoseFree,
@@ -41,7 +47,8 @@ const FiltersScreen = (props) => {
     };
 
     console.log(appliedFilters);
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+    dispatch(setFilters(appliedFilters));
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
 
   useEffect(() => {
     // this is a valid way to communicate with the component to the navigationOptions

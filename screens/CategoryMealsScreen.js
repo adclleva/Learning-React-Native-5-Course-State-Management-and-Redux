@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 // we refactor this by taking out MEALS dummy data in replacement with the Redux store
 import { CATEGORIES } from "../data/dummy-data";
 import MealList from "../components/MealList";
+import DefaultText from "../components/DefaultText";
+import { StyleSheet, View } from "react-native";
 
 const CategoryMealsScreen = (props) => {
   const { navigation } = props;
@@ -22,6 +24,14 @@ const CategoryMealsScreen = (props) => {
   // const selectedCategory = CATEGORIES.find(
   //   (category) => category.id == categoryId
   // );
+
+  if (currentMealsData.length === 0) {
+    return (
+      <View style={styles.content}>
+        <DefaultText>No meals found, maybe check your filters?</DefaultText>
+      </View>
+    );
+  }
 
   // we pass down the navigation props to enable the navigate property to pass the params down
   return <MealList listData={currentMealsData} navigation={navigation} />;
@@ -46,3 +56,11 @@ CategoryMealsScreen.navigationOptions = (navigationData) => {
 };
 
 export default CategoryMealsScreen;
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
